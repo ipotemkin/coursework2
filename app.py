@@ -34,21 +34,22 @@ def add_comments_count_to_posts(posts, comments):
     return posts
 
 
+def load_posts_with_comments_count():
+    posts = read_json(POSTS_FILE_NAME)
+    comments = read_json(COMMENTS_FILE_NAME)
+    return add_comments_count_to_posts(posts, comments)
+
+
 # all posts
 @app.route('/')
 def main_feed():
-    posts = read_json(POSTS_FILE_NAME)
-    comments = read_json(COMMENTS_FILE_NAME)
-    posts = add_comments_count_to_posts(posts, comments)
-    return render_template('main.html', posts=posts)
+    return render_template('main.html', posts=load_posts_with_comments_count())
 
 
 # search throughout the posts
 @app.route('/search/')
 def search():
-    posts = read_json(POSTS_FILE_NAME)
-    comments = read_json(COMMENTS_FILE_NAME)
-    posts = add_comments_count_to_posts(posts, comments)
+    posts = load_posts_with_comments_count()
     results = []
     if word := request.args.get('s'):
         word = word.lower()
