@@ -52,18 +52,12 @@
         <p class="item__text">
           {{ post.content }}
         </p>
-<!--        <p class="item__text">-->
-<!--          Итальянские закрытые сэндвичи называются панини. Для их&nbsp;приготовления берут чиабатту. В&nbsp;классическом рецепте используют традиционные итальянские продукты: помидоры, базилик, мацареллу.</p>-->
         <div class="item__bottom">
+          {% for comment in comments %}
           <p class="item__comment">
-            <b>user 1:</b> комментарий пользователя который его оставил
+            <b>{{ comment.commenter_name }}:</b> {{ comment.comment }}
           </p>
-          <p class="item__comment">
-            <b>user 2:</b> еще один комментарий
-          </p>
-          <p class="item__comment">
-            <b>user 3:</b> и&nbsp;какой-то коммент еще
-          </p>
+          {% endfor %}
           <form action="/" class="item__comment-form comment-form">
             <div class="comment-form__input-wrap">
               <input type="search" class="comment-form__input" placeholder="Ваше имя">

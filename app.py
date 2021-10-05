@@ -30,7 +30,7 @@ def get_comments_by_post_id(post_id: int):
 # all posts
 @app.route('/')
 def main_feed():
-    return render_template('main.html', posts=load_posts(POSTS_FILE_NAME))
+    return render_template('main.html', posts=read_json(POSTS_FILE_NAME))
 
 
 # search throughout the posts
@@ -49,7 +49,7 @@ def search():
 def post(uid: int):
     posts = read_json(POSTS_FILE_NAME)
     post = get_post_by_id(uid, posts)
-    return render_template('post.html', post=post)
+    return render_template('post.html', post=post, comments=get_comments_by_post_id(uid))
 
 
 if __name__ == '__main__':
