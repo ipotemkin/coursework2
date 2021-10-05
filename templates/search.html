@@ -48,13 +48,13 @@
         </a>
         <p class="item__descr"><a href="#" class="item__tag">#food</a>{{ post.content[:30] }}...</p>
         <div class="item__post-info">
-          <p class="item__comments">{{ post.views_count }} комментариев</p>
+          <p class="item__comments">{{ post.comments_count }} комментариев</p>
           <div class="item__counter">
             <img src="../static/img/eye.png" alt="" class="item__counter-icon" width="18">
             <span class="item__counter-text">{{ post.likes_count }}</span>
           </div>
         </div>
-        <a href="#" class="item__btn-more">Покать комментарии</a>
+        <a href="/posts/{{ post.pk }}" class="item__btn-more">Покать комментарии</a>
       </div>
       {% endfor %}
     </section>

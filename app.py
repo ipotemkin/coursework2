@@ -47,6 +47,8 @@ def main_feed():
 @app.route('/search/')
 def search():
     posts = read_json(POSTS_FILE_NAME)
+    comments = read_json(COMMENTS_FILE_NAME)
+    posts = add_comments_count_to_posts(posts, comments)
     results = []
     if word := request.args.get('s'):
         word = word.lower()
