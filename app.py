@@ -28,6 +28,10 @@ def get_post_by_id(uid: int, posts):
     return []
 
 
+def get_posts_by_user(user: str, posts):
+    return [post for post in posts if post['poster_name'] == user]
+
+
 def get_comments_by_post_id(post_id: int, comments=None):
     if not comments:
         comments = read_json(COMMENTS_FILE_NAME)
@@ -98,6 +102,14 @@ def delete_bookmark(uid):
     bookmarks.remove(get_post_by_id(uid, bookmarks))
     to_json(BOOKMARKS_FILE_NAME, bookmarks)
     return redirect('/bookmarks/')
+
+
+# user_feed
+@app.route('/users/<user_name>')
+def show_user_feed(user_name: str):
+    posts = load_posts_with_comments_count()
+    posts = get_posts_by_user(user_name, posts)
+    return render_template('user-feed.html', posts=posts)
 
 
 if __name__ == '__main__':
