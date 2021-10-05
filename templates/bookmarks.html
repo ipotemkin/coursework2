@@ -25,48 +25,24 @@
   </header>
   <main class="container">
     <section class="items">
+      {% for post in bookmarks %}
       <div class="items__item item">
         <div class="item__top">
           <a href="#" class="item__head">
             <div class="item__ava-wrap">
-              <img src="img/ava1.png" alt="" class="item__ava" width="47">
+              <img src="{{ post.poster_avatar }}" alt="" class="item__ava" width="47">
             </div>
-            <span class="item__username">skypro.08</span>
+            <span class="item__username">{{ post.poster_name }}</span>
           </a>
-          <a href="#" class="item__delete">Удалить</a>
+          <a href="/bookmarks/delete/{{ post.pk }}" class="item__delete">Удалить</a>
         </div>
         <a href="#" class="item__post-link">
-          <img src="img/post5.jpg" alt="" width="348" class="item__post-img">
+          <img src="{{ post.pic }}" alt="" width="348" class="item__post-img">
         </a>
-        <p class="item__descr">Текст описания длинный... <a href="#" class="item__btn-more">Еще</a></p>
-        <a href="#" class="item__btn-more">Показать комментарии (13)</a>
+        <p class="item__descr">{{ post.content[:30] }}... <a href="/posts/{{ post.pk }}" class="item__btn-more">Еще</a></p>
+        <a href="/posts/{{ post.pk }}" class="item__btn-more">Показать комментарии ({{ post.comments_count }})</a>
       </div>
-      <div class="items__item item">
-        <a href="#" class="item__head">
-          <div class="item__ava-wrap">
-            <img src="img/ava2.png" alt="" class="item__ava" width="47">
-          </div>
-          <span class="item__username">Username</span>
-        </a>
-        <a href="#" class="item__post-link">
-          <img src="img/post6.jpg" alt="" width="348" class="item__post-img">
-        </a>
-        <p class="item__descr">Текст описания длинный... <a href="#" class="item__btn-more">Еще</a></p>
-        <a href="#" class="item__btn-more">Показать комментарии (13)</a>
-      </div>
-      <div class="items__item item">
-        <a href="#" class="item__head">
-          <div class="item__ava-wrap">
-            <img src="img/ava2.png" alt="" class="item__ava" width="47">
-          </div>
-          <span class="item__username">Username</span>
-        </a>
-        <a href="#" class="item__post-link">
-          <img src="img/post7.jpg" alt="" width="348" class="item__post-img">
-        </a>
-        <p class="item__descr">Текст описания длинный... <a href="#" class="item__btn-more">Еще</a></p>
-        <a href="#" class="item__btn-more">Показать комментарии (13)</a>
-      </div>
+      {% endfor %}
     </section>
   </main>
   <svg xmlns="http://www.w3.org/2000/svg" style="display:none">

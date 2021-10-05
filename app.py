@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect
 import json
 
 
@@ -7,6 +7,7 @@ app.config['JSON_AS_ASCII'] = False
 
 POSTS_FILE_NAME = 'data/data.json'
 COMMENTS_FILE_NAME = 'data/comments.json'
+BOOKMARKS_FILE_NAME = 'data/bookmarks.json'
 MAX_POSTS_IN_SEARCH = 10
 
 
@@ -15,11 +16,16 @@ def read_json(filename):
         return json.load(fp)
 
 
+def to_json(filename, what):
+    with open(filename, 'w', encoding='utf-8') as fp:
+        json.dump(what, fp, ensure_ascii=False, indent='\t')
+
+
 def get_post_by_id(uid: int, posts):
     for post in posts:
         if post['pk'] == uid:
             return post
-    raise IndexError
+    return []
 
 
 def get_comments_by_post_id(post_id: int, comments=None):
@@ -63,6 +69,35 @@ def post(uid: int):
     posts = read_json(POSTS_FILE_NAME)
     post = get_post_by_id(uid, posts)
     return render_template('post.html', post=post, comments=get_comments_by_post_id(uid))
+
+
+# show bookmarks
+@app.route('/bookmarks/')
+def bookmarks():
+    bookmarks = read_json(BOOKMARKS_FILE_NAME)
+    comments = read_json(COMMENTS_FILE_NAME)
+    bookmarks = add_comments_count_to_posts(bookmarks, comments)
+    return render_template('bookmarks.html', bookmarks=bookmarks)
+
+
+# add a bookmark
+@app.route('/bookmarks/add/<int:uid>')
+def add_bookmark(uid):
+    posts = read_json(POSTS_FILE_NAME)
+    bookmarks = read_json(BOOKMARKS_FILE_NAME)
+    if not get_post_by_id(uid, bookmarks):
+        bookmarks.append(get_post_by_id(uid, posts))
+        to_json(BOOKMARKS_FILE_NAME, bookmarks)
+    return redirect('/')
+
+
+# delete a bookmark
+@app.route('/bookmarks/delete/<int:uid>')
+def delete_bookmark(uid):
+    bookmarks = read_json(BOOKMARKS_FILE_NAME)
+    bookmarks.remove(get_post_by_id(uid, bookmarks))
+    to_json(BOOKMARKS_FILE_NAME, bookmarks)
+    return redirect('/bookmarks/')
 
 
 if __name__ == '__main__':
