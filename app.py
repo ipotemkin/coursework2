@@ -22,15 +22,25 @@ def get_post_by_id(uid: int, posts):
     raise IndexError
 
 
-def get_comments_by_post_id(post_id: int):
-    comments = read_json(COMMENTS_FILE_NAME)
+def get_comments_by_post_id(post_id: int, comments=None):
+    if not comments:
+        comments = read_json(COMMENTS_FILE_NAME)
     return [comment for comment in comments if comment['post_id'] == post_id]
+
+
+def add_comments_count_to_posts(posts, comments):
+    for post in posts:
+        post['comments_count'] = len(get_comments_by_post_id(post['pk'], comments))
+    return posts
 
 
 # all posts
 @app.route('/')
 def main_feed():
-    return render_template('main.html', posts=read_json(POSTS_FILE_NAME))
+    posts = read_json(POSTS_FILE_NAME)
+    comments = read_json(COMMENTS_FILE_NAME)
+    posts = add_comments_count_to_posts(posts, comments)
+    return render_template('main.html', posts=posts)
 
 
 # search throughout the posts
