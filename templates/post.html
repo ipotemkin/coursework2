@@ -35,25 +35,25 @@
         <div class="item__top">
           <a href="#" class="item__head">
             <div class="item__ava-wrap">
-              <img src="img/ava1.png" alt="" class="item__ava" width="47">
+              <img src="{{ post.poster_avatar }}" alt="" class="item__ava" width="47">
             </div>
-            <span class="item__username">Username</span>
+            <span class="item__username">{{ post.poster_name }}</span>
           </a>
         </div>
         <a href="#" class="item__post-link">
-          <img src="img/post1.jpg" alt="" width="348" class="item__post-img">
+          <img src="{{ post.pic }}" alt="" width="348" class="item__post-img">
         </a>
         <div class="item__post-info">
           <div class="item__counter">
-            <img src="img/eye.png" alt="" class="item__counter-icon" width="18">
-            <span class="item__counter-text">1023</span>
+            <img src="../static/img/eye.png" alt="" class="item__counter-icon" width="18">
+            <span class="item__counter-text">{{ post.views_count }}</span>
           </div>
         </div>
         <p class="item__text">
-          Закрытые бутерброды пришли к&nbsp;нам из&nbsp;Англии. Вкусные и&nbsp;простые рецепты сэндвичей с&nbsp;фото позволят вам разнообразить завтраки и&nbsp;сделать перекусы более сытными! Они могут быть, как горячими, так и&nbsp;холодными.
+          {{ post.content }}
         </p>
-        <p class="item__text">
-          Итальянские закрытые сэндвичи называются панини. Для их&nbsp;приготовления берут чиабатту. В&nbsp;классическом рецепте используют традиционные итальянские продукты: помидоры, базилик, мацареллу.</p>
+<!--        <p class="item__text">-->
+<!--          Итальянские закрытые сэндвичи называются панини. Для их&nbsp;приготовления берут чиабатту. В&nbsp;классическом рецепте используют традиционные итальянские продукты: помидоры, базилик, мацареллу.</p>-->
         <div class="item__bottom">
           <p class="item__comment">
             <b>user 1:</b> комментарий пользователя который его оставил

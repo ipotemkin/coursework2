@@ -16,7 +16,7 @@ def load_posts(filename):
 
 def get_post_by_id(uid: int, posts):
     for post in posts:
-        if post['id'] == uid:
+        if post['pk'] == uid:
             return post
     raise IndexError
 
