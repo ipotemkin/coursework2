@@ -6,10 +6,19 @@ class DBase:
         self.filename = filename
         self.data = []
 
-    def __call__(self, uid=None, entire_word=True, **kwargs):
+    def __call__(self, uid=None, entire_word=True, case_sensitive=False, **kwargs):
+        """
+        A universal function to get the stored data
+        Option 1: object() - returns all data
+        Option 2: object(uid) - returns an item with the given uid
+        Option 3: object(field_name=value) - returns a list of items that meet the required argument
+        You can also differentiate your search changing entire_word or/and case_insensitive
+        If you set entire_word=True the function searches only an entire word match
+        If you set entire_word=False the function searches the given value as a substring of the given field_name
+        """
         if not kwargs:
             return self.data if not uid else self.get_item_by_id(uid)
-        return self.get_items(entire_word, **kwargs)
+        return self.get_items(entire_word, case_sensitive, **kwargs)
 
     def load(self):
         with open(self.filename, encoding='utf-8') as fp:
@@ -28,17 +37,18 @@ class DBase:
     def get_items_by_user(self, user: str):
         return [item for item in self.data if item['poster_name'] == user]
 
-    def get_items(self, entire_word=True, **kwargs):
+    def get_items(self, entire_word=True, case_sensitive=False, **kwargs):
         kwargs_dict = {**kwargs}
         key = list(kwargs_dict.keys())[0]
         value = list(kwargs_dict.values())[0]
+        if not case_sensitive:
+            value = str(value).lower()
         if entire_word:
-            return [item for item in self.data if item[key] == value]
-        return [item for item in self.data if value in item[key]]
+            return [item for item in self.data if (item[key] if case_sensitive else str(item[key]).lower()) == value]
+        return [item for item in self.data if value in (item[key] if case_sensitive else str(item[key]).lower())]
 
     def add_comments_count(self, comments: 'DBase'):
         for post in self.data:
-            print(post['pk'])
             post['comments_count'] = comments.count(post_id=post['pk'])
 
     def count(self, **kwargs):

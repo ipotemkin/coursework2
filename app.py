@@ -37,8 +37,11 @@ def search():
     posts = load_posts_with_comments_count()
     results = []
     if word := request.args.get('s'):
-        word = word.lower()
-        results = [post for post in posts() if word in post['content'].lower()]
+        results = posts(entire_word=False, content=word)
+    # results = []
+    # if word := request.args.get('s'):
+    #     word = word.lower()
+    #     results = [post for post in posts() if word in post['content'].lower()]
     return render_template('search.html', posts=results[:MAX_POSTS_IN_SEARCH], max_posts=len(results))
 
 
