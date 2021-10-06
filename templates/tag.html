@@ -25,72 +25,77 @@
   </header>
   <main class="container">
     <section class="items">
+      {% for post in posts %}
       <div class="items__item item">
         <div class="item__top">
           <a href="#" class="item__head">
             <div class="item__ava-wrap">
-              <img src="img/ava1.png" alt="" class="item__ava" width="47">
+              <img src="{{ post.poster_avatar }}" alt="" class="item__ava" width="47">
             </div>
-            <span class="item__username">Username</span>
+            <span class="item__username">{{ post.poster_name }}</span>
           </a>
         </div>
         <a href="#" class="item__post-link">
-          <img src="img/post4.jpg" alt="" width="348" class="item__post-img">
+          <img src="{{ post.pic }}" alt="" width="348" class="item__post-img">
         </a>
-        <p class="item__descr"><a href="#" class="item__tag">#food</a> Текст описания коротки...</p>
+        <p class="item__descr"><a href="#" class="item__tag">#food</a>{{ post.content[:30] }}...</p>
         <div class="item__post-info">
-          <p class="item__comments">13 комментариев</p>
+          <p class="item__comments">{{ post.comments_count }} комментариев</p>
           <div class="item__counter">
-            <img src="img/eye.png" alt="" class="item__counter-icon" width="18">
-            <span class="item__counter-text">1023</span>
+            <img src="../static/img/eye.png" alt="" class="item__counter-icon" width="18">
+            <span class="item__counter-text">{{ post.views_count }}</span>
           </div>
         </div>
-        <a href="#" class="item__btn-more">Подробнее</a>
+        <a href="/posts/{{ post.pk }}" class="item__btn-more">Подробнее</a>
       </div>
-      <div class="items__item item">
-        <div class="item__top">
-          <a href="#" class="item__head">
-            <div class="item__ava-wrap">
-              <img src="img/ava2.png" alt="" class="item__ava" width="47">
-            </div>
-            <span class="item__username">Username</span>
-          </a>
-        </div>
-        <a href="#" class="item__post-link">
-          <img src="img/post2.jpg" alt="" width="348" class="item__post-img">
-        </a>
-        <p class="item__descr"><a href="#" class="item__tag">#food</a> Текст описания коротки...</p>
-        <div class="item__post-info">
-          <p class="item__comments">Нет комментариев</p>
-          <div class="item__counter">
-            <img src="img/eye.png" alt="" class="item__counter-icon" width="18">
-            <span class="item__counter-text">1023</span>
-          </div>
-        </div>
-        <a href="#" class="item__btn-more">Подробнее</a>
-      </div>
-      <div class="items__item item">
-        <div class="item__top">
-          <a href="#" class="item__head">
-            <div class="item__ava-wrap">
-              <img src="img/ava2.png" alt="" class="item__ava" width="47">
-            </div>
-            <span class="item__username">Username</span>
-          </a>
-        </div>
-        <a href="#" class="item__post-link">
-          <img src="img/post3.jpg" alt="" width="348" class="item__post-img">
-        </a>
-        <p class="item__descr"><a href="#" class="item__tag">#food</a> Текст описания коротки...</p>
-        <div class="item__post-info">
-          <p class="item__comments">5 комментариев</p>
-          <div class="item__counter">
-            <img src="img/eye.png" alt="" class="item__counter-icon" width="18">
-            <span class="item__counter-text">1023</span>
-          </div>
-        </div>
-        <a href="#" class="item__btn-more">Подробнее</a>
-      </div>
+      {% endfor %}
+
+<!--      <div class="items__item item">-->
+<!--        <div class="item__top">-->
+<!--          <a href="#" class="item__head">-->
+<!--            <div class="item__ava-wrap">-->
+<!--              <img src="img/ava2.png" alt="" class="item__ava" width="47">-->
+<!--            </div>-->
+<!--            <span class="item__username">Username</span>-->
+<!--          </a>-->
+<!--        </div>-->
+<!--        <a href="#" class="item__post-link">-->
+<!--          <img src="img/post2.jpg" alt="" width="348" class="item__post-img">-->
+<!--        </a>-->
+<!--        <p class="item__descr"><a href="#" class="item__tag">#food</a> Текст описания коротки...</p>-->
+<!--        <div class="item__post-info">-->
+<!--          <p class="item__comments">Нет комментариев</p>-->
+<!--          <div class="item__counter">-->
+<!--            <img src="img/eye.png" alt="" class="item__counter-icon" width="18">-->
+<!--            <span class="item__counter-text">1023</span>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--        <a href="#" class="item__btn-more">Подробнее</a>-->
+<!--      </div>-->
+<!--      -->
+<!--      <div class="items__item item">-->
+<!--        <div class="item__top">-->
+<!--          <a href="#" class="item__head">-->
+<!--            <div class="item__ava-wrap">-->
+<!--              <img src="img/ava2.png" alt="" class="item__ava" width="47">-->
+<!--            </div>-->
+<!--            <span class="item__username">Username</span>-->
+<!--          </a>-->
+<!--        </div>-->
+<!--        <a href="#" class="item__post-link">-->
+<!--          <img src="img/post3.jpg" alt="" width="348" class="item__post-img">-->
+<!--        </a>-->
+<!--        <p class="item__descr"><a href="#" class="item__tag">#food</a> Текст описания коротки...</p>-->
+<!--        <div class="item__post-info">-->
+<!--          <p class="item__comments">5 комментариев</p>-->
+<!--          <div class="item__counter">-->
+<!--            <img src="img/eye.png" alt="" class="item__counter-icon" width="18">-->
+<!--            <span class="item__counter-text">1023</span>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--        <a href="#" class="item__btn-more">Подробнее</a>-->
+<!--      </div>-->
+
     </section>
   </main>
   <svg xmlns="http://www.w3.org/2000/svg" style="display:none">

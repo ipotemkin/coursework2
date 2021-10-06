@@ -5,46 +5,10 @@ from dbase import DBase
 app = Flask(__name__)
 app.config['JSON_AS_ASCII'] = False
 
-# POSTS_FILE_NAME = 'data/data.json'
-# COMMENTS_FILE_NAME = 'data/comments.json'
-# BOOKMARKS_FILE_NAME = 'data/bookmarks.json'
 MAX_POSTS_IN_SEARCH = 10
 posts = DBase('data/data.json')
 comments = DBase('data/comments.json')
 bookmarks = DBase('data/bookmarks.json')
-
-
-# def read_json(filename):
-#     with open(filename, encoding='utf-8') as fp:
-#         return json.load(fp)
-#
-#
-# def to_json(filename, what):
-#     with open(filename, 'w', encoding='utf-8') as fp:
-#         json.dump(what, fp, ensure_ascii=False, indent='\t')
-#
-#
-# def get_post_by_id(uid: int, posts):
-#     for post in posts:
-#         if post['pk'] == uid:
-#             return post
-#     return []
-#
-#
-# def get_posts_by_user(user: str, posts):
-#     return [post for post in posts if post['poster_name'] == user]
-#
-#
-# def get_comments_by_post_id(post_id: int, comments=None):
-#     if not comments:
-#         comments = read_json(COMMENTS_FILE_NAME)
-#     return [comment for comment in comments if comment['post_id'] == post_id]
-#
-#
-# def add_comments_count_to_posts(posts, comments):
-#     for post in posts:
-#         post['comments_count'] = len(get_comments_by_post_id(post['pk'], comments))
-#     return posts
 
 
 def load_posts_with_comments_count():
@@ -83,6 +47,7 @@ def search():
 def post(uid: int):
     posts.load()
     comments.load()
+    # posts.wrap_tags()
     return render_template('post.html', post=posts(uid), comments=comments(post_id=uid))
 
 
@@ -103,7 +68,7 @@ def add_bookmark(uid):
     if not bookmarks(uid):
         bookmarks.data.append(posts(uid))
         bookmarks.save()
-    return redirect('/')
+    return redirect('/#post'+str(uid))
 
 
 # delete a bookmark
@@ -121,6 +86,14 @@ def show_user_feed(user_name: str):
     global posts
     posts = load_posts_with_comments_count()
     return render_template('user-feed.html', posts=posts(poster_name=user_name))
+
+
+# show tags
+@app.route('/tag/<tag>')
+def show_tag(tag: str):
+    global posts
+    posts = load_posts_with_comments_count()
+    return render_template('tag.html', posts=posts(entire_word=False, content='#'+tag))
 
 
 if __name__ == '__main__':
