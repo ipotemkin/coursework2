@@ -24,7 +24,8 @@ def load_posts_with_comments_count():
 def main_feed():
     global posts
     posts = load_posts_with_comments_count()
-    return render_template('main.html', posts=posts())
+    bookmarks.load()
+    return render_template('main.html', posts=posts(), bookmarks_count=len(bookmarks()))
 
 
 # search throughout the posts
