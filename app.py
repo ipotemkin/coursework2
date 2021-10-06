@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, redirect
-from dbase import DBase
+from dbase import DBase, Comments
 
 
 app = Flask(__name__)
@@ -7,24 +7,21 @@ app.config['JSON_AS_ASCII'] = False
 
 MAX_POSTS_IN_SEARCH = 10
 posts = DBase('data/data.json')
-comments = DBase('data/comments.json')
+comments = Comments('data/comments.json')
 bookmarks = DBase('data/bookmarks.json')
 
 
 def load_posts_with_comments_count():
     global posts, comments
-    posts.load()
-    comments.load()
-    posts.add_comments_count(comments)
+    posts.load()  # loading posts from the previously given json file
+    comments.load()  # loading comments from the previously given json file
+    posts.add_comments_count(comments)  # adding the actual number of comments to each post
     return posts
 
 
 # all posts
 @app.route('/')
 def main_feed():
-    # posts.load()
-    # comments.load()
-    # posts.add_comments_count(comments)
     global posts
     posts = load_posts_with_comments_count()
     return render_template('main.html', posts=posts())
@@ -37,11 +34,7 @@ def search():
     posts = load_posts_with_comments_count()
     results = []
     if word := request.args.get('s'):
-        results = posts(entire_word=False, content=word)
-    # results = []
-    # if word := request.args.get('s'):
-    #     word = word.lower()
-    #     results = [post for post in posts() if word in post['content'].lower()]
+        results = posts(entire_word=False, content=word)  # looking up the posts' content for the word as a substring
     return render_template('search.html', posts=results[:MAX_POSTS_IN_SEARCH], max_posts=len(results))
 
 
@@ -59,7 +52,7 @@ def post(uid: int):
 def show_bookmarks():
     bookmarks.load()
     comments.load()
-    bookmarks.add_comments_count(comments)
+    bookmarks.add_comments_count(comments)  # adding the actual number of comments to each post in the bookmarks
     return render_template('bookmarks.html', bookmarks=bookmarks())
 
 
@@ -70,7 +63,7 @@ def add_bookmark(uid):
     bookmarks.load()
     if not bookmarks(uid):
         bookmarks.data.append(posts(uid))
-        bookmarks.save()
+        bookmarks.save()  # saving bookmarks to the previously given json file
     return redirect('/#post'+str(uid))
 
 
@@ -97,6 +90,20 @@ def show_tag(tag: str):
     global posts
     posts = load_posts_with_comments_count()
     return render_template('tag.html', posts=posts(entire_word=False, content='#'+tag))
+
+
+# one post in detail
+@app.route('/posts/<int:uid>', methods=['POST'])
+def add_comments(uid: int):
+    # new_book = request.get_json()
+    global posts, comments
+    if (new_post_user_name := request.form.get('new_post_user_name')) \
+            and (new_comments := request.form.get('new_comments')):
+        print(new_post_user_name)
+        print(new_comments)
+        comments.append(uid, new_post_user_name, new_comments)
+        comments.save()
+    return render_template('post.html', post=posts(uid), comments=comments(post_id=uid))
 
 
 if __name__ == '__main__':

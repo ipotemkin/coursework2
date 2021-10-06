@@ -65,12 +65,12 @@
             <b>{{ comment.commenter_name }}:</b> {{ comment.comment }}
           </p>
           {% endfor %}
-          <form action="/" class="item__comment-form comment-form">
+          <form action="/posts/{{ post.pk }}" class="item__comment-form comment-form" method="post">
             <div class="comment-form__input-wrap">
-              <input type="search" class="comment-form__input" placeholder="Ваше имя">
+              <input name="new_post_user_name" type="search" class="comment-form__input" placeholder="Ваше имя">
             </div>
             <div class="comment-form__input-wrap">
-              <textarea class="comment-form__textarea" placeholder="Ваш комментарий" rows="4"></textarea>
+              <textarea name="new_comments" class="comment-form__textarea" placeholder="Ваш комментарий" rows="4"></textarea>
             </div>
             <button type="submit" class="comment-form__btn">Отправить</button>
           </form>

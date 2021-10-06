@@ -59,6 +59,13 @@ class DBase:
         value = list(kwargs_dict.values())[0]
         return len([item for item in self.data if item[key] == value])
 
+    def get_max_id(self):
+        max_id = 0
+        for item in self.data:
+            if max_id < item['pk']:
+                max_id = item['pk']
+        return max_id
+
 # it doesn't work in html
 #     def wrap_tags(self):
 #         field = 'content'
@@ -71,6 +78,14 @@ class DBase:
 #                         word = tag_format.format(word[1:], word)
 #                     content_lst.append(word)
 #                 item[field] = ' '.join(content_lst)
+
+
+class Comments(DBase):
+    def append(self, post_id: int, commenter_name: str, comment: str):
+        self.data.append({'post_id': post_id,
+                          'commenter_name': commenter_name,
+                          'comment': comment,
+                          'pk': self.get_max_id() + 1})
 
 
 if __name__ == '__main__':

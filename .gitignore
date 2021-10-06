@@ -4,3 +4,4 @@ venv/*
 .gitignore.save
 questions.txt
 __pycache__/*
+data/comments_backup.json
