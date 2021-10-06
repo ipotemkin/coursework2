@@ -25,6 +25,7 @@ def main_feed():
     global posts
     posts = load_posts_with_comments_count()
     bookmarks.load()
+    posts.add_bookmark_status(bookmarks)
     return render_template('main.html', posts=posts(), bookmarks_count=len(bookmarks()))
 
 

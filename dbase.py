@@ -51,6 +51,10 @@ class DBase:
         for post in self.data:
             post['comments_count'] = comments.count(post_id=post['pk'])
 
+    def add_bookmark_status(self, bookmarks: 'DBase'):
+        for post in self.data:
+            post['bookmarked'] = True if bookmarks(post['pk']) else False
+
     def count(self, **kwargs):
         if not kwargs:
             return 0
