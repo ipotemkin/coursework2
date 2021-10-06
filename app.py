@@ -83,6 +83,8 @@ def delete_bookmark(uid):
 def show_user_feed(user_name: str):
     global posts
     posts = load_posts_with_comments_count()
+    bookmarks.load()
+    posts.add_bookmark_status(bookmarks)
     return render_template('user-feed.html', posts=posts(poster_name=user_name))
 
 
