@@ -5,4 +5,5 @@ venv/*
 questions.txt
 __pycache__/*
 data/comments_backup.json
+data/data_backup.json
 static/css/backup/*
