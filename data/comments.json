@@ -148,5 +148,11 @@
 		"commenter_name": "User1",
 		"comment": "Beautiful picture!",
 		"pk": 25
+	},
+	{
+		"post_id": 1,
+		"commenter_name": "John",
+		"comment": "New test",
+		"pk": 26
 	}
 ]

@@ -27,7 +27,6 @@ def load_posts_with_comments_count():
     posts.load()  # loading posts from the previously given json file
     comments.load()  # loading comments from the previously given json file
     posts.add_comments_count(comments)  # adding the actual number of comments to each post
-    return posts
 
 
 def load_all_data():
@@ -38,8 +37,7 @@ def load_all_data():
 # all posts
 @app.route('/')
 def main_feed():
-    global posts
-    posts = load_posts_with_comments_count()
+    load_posts_with_comments_count()
     bookmarks.load()
     posts.add_bookmark_status(bookmarks)
     return render_template('main.html', posts=posts(), bookmarks_count=len(bookmarks()))
@@ -48,8 +46,7 @@ def main_feed():
 # search throughout the posts
 @app.route('/search/')
 def search():
-    global posts
-    posts = load_posts_with_comments_count()
+    load_posts_with_comments_count()
     results = []
     if word := request.args.get('s'):
         results = posts(entire_word=False, content=word)  # looking up the posts' content for the word as a substring
@@ -67,9 +64,6 @@ def post(uid: int):
 
     # OPTION 2, it should be quicker
     load_all_data()
-    # posts.load()
-    # comments.load()
-    # bookmarks.load()
     post = posts(uid)
     post['comments_count'] = comments.count(post_id=uid)
     post['bookmarked'] = True if bookmarks.count(pk=uid) else False
@@ -109,8 +103,7 @@ def delete_bookmark(uid):
 # user_feed
 @app.route('/users/<user_name>')
 def show_user_feed(user_name: str):
-    global posts
-    posts = load_posts_with_comments_count()
+    load_posts_with_comments_count()
     bookmarks.load()
     posts.add_bookmark_status(bookmarks)
     return render_template('user-feed.html', posts=posts(poster_name=user_name))
@@ -119,19 +112,18 @@ def show_user_feed(user_name: str):
 # show tags
 @app.route('/tag/<tag>')
 def show_tag(tag: str):
-    global posts
-    posts = load_posts_with_comments_count()
+    load_posts_with_comments_count()
     return render_template('tag.html', posts=posts(entire_word=False, content='#'+tag))
 
 
 # one post in detail
 @app.route('/posts/<int:uid>', methods=['POST'])
 def add_comments(uid: int):
-    global posts, comments
     if (new_post_user_name := request.form.get('new_post_user_name')) \
             and (new_comments := request.form.get('new_comments')):
         comments.append(uid, new_post_user_name, new_comments)
-        posts.add_comments_count(comments)
+        # posts.add_comments_count(comments)
+        posts(uid)['comments_count'] = comments.count(post_id=uid)
     return render_template('post.html', post=posts(uid), comments=comments(post_id=uid))
 
 
