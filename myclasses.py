@@ -96,6 +96,10 @@ class DBase:
 
 
 class Comments(DBase):
+
+    def __repr__(self):
+        return f"<Comments({self.filename})>"
+
     def append(self, post_id: int, commenter_name: str, comment: str):
         self.load()
         self.data.append({'post_id': post_id,

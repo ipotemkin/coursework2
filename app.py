@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, redirect
-from dbase import DBase, Comments
+from myclasses import DBase, Comments
 
 
 app = Flask(__name__)
@@ -7,6 +7,7 @@ app.config['JSON_AS_ASCII'] = False
 app.config['OBJ_LIST'] = []
 
 
+# registers data objects to make some operations on them all
 def register_obj(*objects):
     for obj in objects:
         if obj not in app.config['OBJ_LIST']:
@@ -22,6 +23,7 @@ bookmarks = DBase('data/bookmarks.json')
 register_obj(posts, comments, bookmarks)
 
 
+# a batch script
 def load_posts_with_comments_count():
     # global posts, comments
     posts.load()  # loading posts from the previously given json file
@@ -34,7 +36,7 @@ def load_all_data():
         obj.load()
 
 
-# all posts
+# show all posts
 @app.route('/')
 def main_feed():
     load_posts_with_comments_count()
@@ -61,6 +63,7 @@ def post(uid: int):
     # posts = load_posts_with_comments_count()
     # bookmarks.load()
     # posts.add_bookmark_status(bookmarks)
+    # return render_template('post.html', post=posts(uid), comments=comments(post_id=uid))
 
     # OPTION 2, it should be quicker
     load_all_data()
@@ -69,11 +72,8 @@ def post(uid: int):
     post['bookmarked'] = True if bookmarks.count(pk=uid) else False
     return render_template('post.html', post=post, comments=comments(post_id=uid))
 
-    # OPTION 1
-    # return render_template('post.html', post=posts(uid), comments=comments(post_id=uid))
 
-
-# show bookmarks
+# show all bookmarks
 @app.route('/bookmarks/')
 def show_bookmarks():
     bookmarks.load()
