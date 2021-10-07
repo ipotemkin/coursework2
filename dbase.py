@@ -70,6 +70,10 @@ class DBase:
                 max_id = item['pk']
         return max_id
 
+    def append(self, item):
+        self.data.append(item)
+        self.save()
+
 # it doesn't work in html
 #     def wrap_tags(self):
 #         field = 'content'

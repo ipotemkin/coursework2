@@ -66,8 +66,7 @@ def add_bookmark(uid):
     posts.load()
     bookmarks.load()
     if not bookmarks(uid):
-        bookmarks.data.append(posts(uid))
-        bookmarks.save()  # saving bookmarks to the previously given json file
+        bookmarks.append(posts(uid))
     return redirect('/#post'+str(uid))
 
 
