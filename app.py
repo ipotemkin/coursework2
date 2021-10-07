@@ -25,7 +25,6 @@ register_obj(posts, comments, bookmarks)
 
 # a batch script
 def load_posts_with_comments_count(bkmarks=False):
-    # global posts, comments
     posts.load()  # loading posts from the previously given json file
     comments.load()  # loading comments from the previously given json file
     posts.add_comments_count(comments)  # adding the actual number of comments to each post
@@ -86,7 +85,7 @@ def add_bookmark(uid):
     bookmarks.load()
     if not bookmarks(uid):
         bookmarks.append(posts(uid))
-    return redirect('/#post'+str(uid))
+    return redirect('/#post'+str(uid), code=302)
 
 
 # delete a bookmark
@@ -94,15 +93,13 @@ def add_bookmark(uid):
 def delete_bookmark(uid):
     bookmarks.load()
     bookmarks.remove(bookmarks(uid))
-    return redirect('/bookmarks/')
+    return redirect('/bookmarks/', code=302)
 
 
 # user_feed
 @app.route('/users/<user_name>')
 def show_user_feed(user_name: str):
-    load_posts_with_comments_count()
-    bookmarks.load()
-    posts.add_bookmark_status(bookmarks)
+    load_posts_with_comments_count(bkmarks=True)
     return render_template('user-feed.html', posts=posts(poster_name=user_name))
 
 
@@ -119,7 +116,6 @@ def add_comments(uid: int):
     if (new_post_user_name := request.form.get('new_post_user_name')) \
             and (new_comments := request.form.get('new_comments')):
         comments.append(uid, new_post_user_name, new_comments)
-        # posts.add_comments_count(comments)
         posts(uid)['comments_count'] = comments.count(post_id=uid)
     return render_template('post.html', post=posts(uid), comments=comments(post_id=uid))
 
