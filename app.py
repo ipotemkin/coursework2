@@ -24,11 +24,14 @@ register_obj(posts, comments, bookmarks)
 
 
 # a batch script
-def load_posts_with_comments_count():
+def load_posts_with_comments_count(bkmarks=False):
     # global posts, comments
     posts.load()  # loading posts from the previously given json file
     comments.load()  # loading comments from the previously given json file
     posts.add_comments_count(comments)  # adding the actual number of comments to each post
+    if bkmarks:
+        bookmarks.load()
+        posts.add_bookmark_status(bookmarks)
 
 
 def load_all_data():
@@ -39,19 +42,16 @@ def load_all_data():
 # show all posts
 @app.route('/')
 def main_feed():
-    load_posts_with_comments_count()
-    bookmarks.load()
-    posts.add_bookmark_status(bookmarks)
+    load_posts_with_comments_count(bkmarks=True)
     return render_template('main.html', posts=posts(), bookmarks_count=len(bookmarks()))
 
 
 # search throughout the posts
 @app.route('/search/')
 def search():
-    load_posts_with_comments_count()
-    results = []
-    if word := request.args.get('s'):
-        results = posts(entire_word=False, content=word)  # looking up the posts' content for the word as a substring
+    load_posts_with_comments_count(bkmarks=True)
+    # looking up the posts' content for the word as a substring
+    results = posts(entire_word=False, content=word) if (word := request.args.get('s')) else []
     return render_template('search.html', posts=results[:MAX_POSTS_IN_SEARCH], max_posts=len(results))
 
 
@@ -59,18 +59,15 @@ def search():
 @app.route('/posts/<int:uid>')
 def post(uid: int):
     # OPTION 1 - shorter
-    # global posts
-    # posts = load_posts_with_comments_count()
-    # bookmarks.load()
-    # posts.add_bookmark_status(bookmarks)
+    # load_posts_with_comments_count(bkmarks=True)
     # return render_template('post.html', post=posts(uid), comments=comments(post_id=uid))
 
     # OPTION 2, it should be quicker
     load_all_data()
-    post = posts(uid)
-    post['comments_count'] = comments.count(post_id=uid)
-    post['bookmarked'] = True if bookmarks.count(pk=uid) else False
-    return render_template('post.html', post=post, comments=comments(post_id=uid))
+    post_ = posts(uid)
+    post_['comments_count'] = comments.count(post_id=uid)
+    post_['bookmarked'] = True if bookmarks.count(pk=uid) else False
+    return render_template('post.html', post=post_, comments=comments(post_id=uid))
 
 
 # show all bookmarks
