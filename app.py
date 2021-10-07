@@ -101,13 +101,10 @@ def show_tag(tag: str):
 # one post in detail
 @app.route('/posts/<int:uid>', methods=['POST'])
 def add_comments(uid: int):
-    # new_book = request.get_json()
     global posts, comments
     if (new_post_user_name := request.form.get('new_post_user_name')) \
             and (new_comments := request.form.get('new_comments')):
-        comments.load()
         comments.append(uid, new_post_user_name, new_comments)
-        comments.save()
         posts.add_comments_count(comments)
     return render_template('post.html', post=posts(uid), comments=comments(post_id=uid))
 

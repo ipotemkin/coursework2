@@ -130,5 +130,11 @@
 		"commenter_name": "Hank",
 		"comment": "Regards from Hank!",
 		"pk": 22
+	},
+	{
+		"post_id": 4,
+		"commenter_name": "John",
+		"comment": "Just a test",
+		"pk": 23
 	}
 ]

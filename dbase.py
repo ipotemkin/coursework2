@@ -86,10 +86,12 @@ class DBase:
 
 class Comments(DBase):
     def append(self, post_id: int, commenter_name: str, comment: str):
+        self.load()
         self.data.append({'post_id': post_id,
                           'commenter_name': commenter_name,
                           'comment': comment,
                           'pk': self.get_max_id() + 1})
+        self.save()
 
 
 if __name__ == '__main__':
