@@ -74,6 +74,10 @@ class DBase:
         self.data.append(item)
         self.save()
 
+    def remove(self, item):
+        self.data.remove(item)
+        self.save()
+
 # it doesn't work in html
 #     def wrap_tags(self):
 #         field = 'content'

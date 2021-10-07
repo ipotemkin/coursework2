@@ -74,8 +74,7 @@ def add_bookmark(uid):
 @app.route('/bookmarks/delete/<int:uid>')
 def delete_bookmark(uid):
     bookmarks.load()
-    bookmarks.data.remove(bookmarks(uid))
-    bookmarks.save()
+    bookmarks.remove(bookmarks(uid))
     return redirect('/bookmarks/')
 
 
