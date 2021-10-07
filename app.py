@@ -4,19 +4,35 @@ from dbase import DBase, Comments
 
 app = Flask(__name__)
 app.config['JSON_AS_ASCII'] = False
+app.config['OBJ_LIST'] = []
+
+
+def register_obj(*objects):
+    for obj in objects:
+        if obj not in app.config['OBJ_LIST']:
+            app.config['OBJ_LIST'].append(obj)
+
 
 MAX_POSTS_IN_SEARCH = 10
+
+# preparing all data objects
 posts = DBase('data/data.json')
 comments = Comments('data/comments.json')
 bookmarks = DBase('data/bookmarks.json')
+register_obj(posts, comments, bookmarks)
 
 
 def load_posts_with_comments_count():
-    global posts, comments
+    # global posts, comments
     posts.load()  # loading posts from the previously given json file
     comments.load()  # loading comments from the previously given json file
     posts.add_comments_count(comments)  # adding the actual number of comments to each post
     return posts
+
+
+def load_all_data():
+    for obj in app.config['OBJ_LIST']:
+        obj.load()
 
 
 # all posts
@@ -43,12 +59,24 @@ def search():
 # one post in detail
 @app.route('/posts/<int:uid>')
 def post(uid: int):
-    global posts
-    posts = load_posts_with_comments_count()
-    bookmarks.load()
-    posts.add_bookmark_status(bookmarks)
-    # posts.wrap_tags()
-    return render_template('post.html', post=posts(uid), comments=comments(post_id=uid))
+    # OPTION 1 - shorter
+    # global posts
+    # posts = load_posts_with_comments_count()
+    # bookmarks.load()
+    # posts.add_bookmark_status(bookmarks)
+
+    # OPTION 2, it should be quicker
+    load_all_data()
+    # posts.load()
+    # comments.load()
+    # bookmarks.load()
+    post = posts(uid)
+    post['comments_count'] = comments.count(post_id=uid)
+    post['bookmarked'] = True if bookmarks.count(pk=uid) else False
+    return render_template('post.html', post=post, comments=comments(post_id=uid))
+
+    # OPTION 1
+    # return render_template('post.html', post=posts(uid), comments=comments(post_id=uid))
 
 
 # show bookmarks
@@ -108,4 +136,5 @@ def add_comments(uid: int):
 
 
 if __name__ == '__main__':
+    # print(*app.config['OBJ_LIST'], sep='\n')
     app.run()

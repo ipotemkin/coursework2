@@ -6,6 +6,9 @@ class DBase:
         self.filename = filename
         self.data = []
 
+    def __repr__(self):
+        return f"<DBase({self.filename})>"
+
     def __call__(self, uid=None, entire_word=True, case_sensitive=False, **kwargs):
         """
         A universal function to get the stored data

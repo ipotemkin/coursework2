@@ -136,5 +136,17 @@
 		"commenter_name": "John",
 		"comment": "Just a test",
 		"pk": 23
+	},
+	{
+		"post_id": 1,
+		"commenter_name": "Mary",
+		"comment": "What a nice day",
+		"pk": 24
+	},
+	{
+		"post_id": 8,
+		"commenter_name": "User1",
+		"comment": "Beautiful picture!",
+		"pk": 25
 	}
 ]
