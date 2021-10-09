@@ -27,10 +27,10 @@ class DBase:
     def load(self):
         with open(self.filename, encoding='utf-8') as fp:
             self.data = json.load(fp)
-        self.wrap_tags()
+        # self.wrap_tags()
 
     def save(self):
-        self.strip_tags()
+        # self.strip_tags()
         with open(self.filename, 'w', encoding='utf-8') as fp:
             json.dump(self.data, fp, ensure_ascii=False, indent='\t')
 
@@ -106,6 +106,26 @@ class DBase:
 
         # print(self.data[0]['content'])
         # print(re.sub("<.*?>", "", self.data[0]['content']))
+
+
+class Posts(DBase):
+
+    def __repr__(self):
+        return f"<Posts({self.filename})>"
+
+    def load(self):
+        super().load()
+        self.wrap_tags()
+
+    def save(self):
+        self.strip_tags()
+        super().save()
+
+
+class Bookmarks(DBase):
+
+    def __repr__(self):
+        return f"<Posts({self.filename})>"
 
 
 class Comments(DBase):

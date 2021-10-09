@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, redirect
-from myclasses import DBase, Comments
+from myclasses import Posts, Bookmarks, Comments
 
 
 app = Flask(__name__)
@@ -17,9 +17,9 @@ def register_obj(*objects):
 MAX_POSTS_IN_SEARCH = 10
 
 # preparing all data objects
-posts = DBase('data/data.json')
+posts = Posts('data/data.json')
 comments = Comments('data/comments.json')
-bookmarks = DBase('data/bookmarks.json')
+bookmarks = Bookmarks('data/bookmarks.json')
 register_obj(posts, comments, bookmarks)
 
 
@@ -100,7 +100,7 @@ def add_bookmark(uid):
     bookmarks.load()
     if not bookmarks(uid):
         bookmarks.append(posts(uid))
-    return redirect('/', code=302)
+    return redirect(request.referrer, code=302)
 
 
 # delete a bookmark
