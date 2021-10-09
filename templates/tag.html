@@ -38,7 +38,8 @@
         <a href="#" class="item__post-link">
           <img src="{{ post.pic }}" alt="" width="348" class="item__post-img">
         </a>
-        <p class="item__descr"><a href="#" class="item__tag">#food</a>{{ post.content[:30] }}...</p>
+        <p class="item__descr">{{ post.content | safe }}...</p>
+<!--        <p class="item__descr"><a href="#" class="item__tag">#food</a>{{ post.content[:30] }}...</p>-->
         <div class="item__post-info">
           <p class="item__comments">{{ post.comments_count }} комментариев</p>
           <div class="item__counter">

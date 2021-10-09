@@ -61,14 +61,16 @@
 <!--          </div>-->
 <!--        </div>-->
         <p class="item__text">
-          {% for word in post.content.split(' ') %}
-          {% if word[0] == "#" %}
-            <a href="/tag/{{ word[1:] }}">{{ word }}</a>
-          {% else %}
-            {{ word }}
-          {% endif%}
-          {% endfor %}
-<!--          {{ post.content }}-->
+
+<!--          {% for word in post.content.split(' ') %}-->
+<!--          {% if word[0] == "#" %}-->
+<!--            <a href="/tag/{{ word[1:] }}">{{ word }}</a>-->
+<!--          {% else %}-->
+<!--            {{ word }}-->
+<!--          {% endif%}-->
+<!--          {% endfor %}-->
+
+          {{ post.content | safe }}
         </p>
         <div class="item__bottom">
 

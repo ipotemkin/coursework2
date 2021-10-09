@@ -39,7 +39,8 @@
         <a href="#" class="item__post-link">
           <img src="{{ post.pic }}" alt="" width="348" class="item__post-img">
         </a>
-        <p class="item__descr">{{ post.content[:30] }}... <a href="/posts/{{ post.pk }}" class="item__btn-more">Еще</a></p>
+        <p class="item__descr">{{ post.content | striptags | truncate(30) }}
+          <a href="/posts/{{ post.pk }}" class="item__btn-more">Еще</a></p>
         <a href="/posts/{{ post.pk }}" class="item__btn-more">Показать комментарии ({{ post.comments_count }})</a>
       </div>
       {% endfor %}

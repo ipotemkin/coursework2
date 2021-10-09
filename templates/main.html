@@ -41,7 +41,7 @@
         <a href="#" class="item__post-link">
           <img src="{{ post.pic }}" alt="" width="348" class="item__post-img">
         </a>
-        <p class="item__descr">{{ post.content[:35] }}...</p>
+        <p class="item__descr">{{ post.content | striptags | truncate(39) }}</p>
         <div class="item__post-info">
           <p class="item__comments-counter">{{ post.comments_count }} комментариев</p>
           <div class="item__counter">

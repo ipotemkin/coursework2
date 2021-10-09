@@ -1,4 +1,5 @@
 import json
+import re
 
 
 class DBase:
@@ -26,8 +27,10 @@ class DBase:
     def load(self):
         with open(self.filename, encoding='utf-8') as fp:
             self.data = json.load(fp)
+        self.wrap_tags()
 
     def save(self):
+        self.strip_tags()
         with open(self.filename, 'w', encoding='utf-8') as fp:
             json.dump(self.data, fp, ensure_ascii=False, indent='\t')
 
@@ -82,17 +85,27 @@ class DBase:
         self.save()
 
 # it doesn't work in html
-#     def wrap_tags(self):
-#         field = 'content'
-#         tag_format = '<a href="/tag/{}">{}</a>'
-#         content_lst = []
-#         for item in self.data:
-#             if '#' in item[field]:
-#                 for word in item[field].split():
-#                     if '#' in word:
-#                         word = tag_format.format(word[1:], word)
-#                     content_lst.append(word)
-#                 item[field] = ' '.join(content_lst)
+    def wrap_tags(self):
+        field = 'content'
+        tag_format = '<a href="/tag/{}" class="item__tag">{}</a>'
+        for item in self.data:
+            content_lst = []
+            if field in item and '#' in item[field]:
+                for word in item[field].split():
+                    if '#' in word:
+                        word = tag_format.format(word[1:], word)
+                    content_lst.append(word)
+                item[field] = ' '.join(content_lst)
+
+    def strip_tags(self):
+        field = 'content'
+        for item in self.data:
+            content_lst = []
+            if field in item and '#' in item[field]:
+                item[field] = re.sub("<.*?>", "", item[field])
+
+        # print(self.data[0]['content'])
+        # print(re.sub("<.*?>", "", self.data[0]['content']))
 
 
 class Comments(DBase):
@@ -113,6 +126,7 @@ if __name__ == '__main__':
     posts = DBase('data/data.json')
     posts.load()
     print(posts(entire_word=False, content='#инста'))
+    posts.strip_tags()
     # posts.wrap_tags()
     # print(posts(5))
     # # print(posts())

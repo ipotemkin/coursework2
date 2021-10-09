@@ -38,6 +38,18 @@ def load_all_data():
         obj.load()
 
 
+def wrap_tags(text: str) -> str:
+    tag_format = '<a href="/tag/{}" class="item__tag">{}</a>'
+    content_lst = []
+    if '#' in text:
+        for word in text.split():
+            if '#' in word:
+                word = tag_format.format(word[1:], word)
+            content_lst.append(word)
+        return ' '.join(content_lst)
+    return text
+
+
 # show all posts
 @app.route('/')
 def main_feed():
@@ -66,6 +78,9 @@ def post(uid: int):
     post_ = posts(uid)
     post_['comments_count'] = comments.count(post_id=uid)
     post_['bookmarked'] = True if bookmarks.count(pk=uid) else False
+
+    # post_['content'] = wrap_tags(post_['content'])  #
+
     return render_template('post.html', post=post_, comments=comments(post_id=uid))
 
 
@@ -85,7 +100,7 @@ def add_bookmark(uid):
     bookmarks.load()
     if not bookmarks(uid):
         bookmarks.append(posts(uid))
-    return redirect('/#post'+str(uid), code=302)
+    return redirect('/', code=302)
 
 
 # delete a bookmark
@@ -93,7 +108,7 @@ def add_bookmark(uid):
 def delete_bookmark(uid):
     bookmarks.load()
     bookmarks.remove(bookmarks(uid))
-    return redirect('/bookmarks/', code=302)
+    return redirect(request.referrer, code=302)
 
 
 # user_feed
