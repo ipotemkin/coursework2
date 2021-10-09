@@ -84,7 +84,6 @@ class DBase:
         self.data.remove(item)
         self.save()
 
-# it doesn't work in html
     def wrap_tags(self):
         field = 'content'
         tag_format = '<a href="/tag/{}" class="item__tag">{}</a>'
@@ -100,12 +99,8 @@ class DBase:
     def strip_tags(self):
         field = 'content'
         for item in self.data:
-            content_lst = []
             if field in item and '#' in item[field]:
                 item[field] = re.sub("<.*?>", "", item[field])
-
-        # print(self.data[0]['content'])
-        # print(re.sub("<.*?>", "", self.data[0]['content']))
 
 
 class Posts(DBase):
