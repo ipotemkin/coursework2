@@ -92,7 +92,7 @@ def show_user_feed(user_name: str):
 # show tags
 @app.route('/tag/<tag>')
 def show_tag(tag: str):
-    load_posts_with_comments_count()
+    load_posts_with_comments_count(bkmarks=True)
     return render_template('matrix_view.html',
                            posts=posts(entire_word=False, content='#'+tag),
                            title='TAG/' + tag.upper(),
