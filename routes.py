@@ -24,7 +24,8 @@ def search():
                            max_posts=len(results),
                            title='SEARCH',
                            search_mode=False,
-                           bookmarks_count=len(bookmarks())
+                           bookmarks_count=len(bookmarks()),
+                           searching_word=word
                            )
 
 

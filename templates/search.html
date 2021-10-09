@@ -31,7 +31,11 @@
     <section class="items">
       <div class="search">
       <form action="/search" class="search__form">
-          <input type="search" class="search__input" name="s" placeholder="Например: Еда">
+      {% if searching_word %}
+        <input type="search" class="search__input" name="s" value="{{ searching_word }}" placeholder="Например: Еда">
+      {% else %}
+        <input type="search" class="search__input" name="s" placeholder="Например: Еда">
+      {% endif %}
       </form>
         <p class="search__results">Найдено постов: {{ max_posts }}</p>
       </div>
