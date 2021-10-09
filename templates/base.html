@@ -9,24 +9,31 @@
 
   <header class="container header">
     <div class="header__wrapper">
-      <a href="/search/" class="header__btn-back">
         {% if search_mode %}
+        <a href="/search/" class="header__btn-back">
           <img src="../static/img/search.png" alt="" class="header__btn-icon" width="28">
+        </a>
         {% else %}
+        <a href="/" class="header__btn-back">
         <svg class="header__btn-icon" width="19" height="16">
           <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#back"></use>
         </svg>
+        </a>
         {% endif %}
-      </a>
       <a href="/" class="header__logo-link">
 <!--        <svg class="header__logo" width="177" height="26">-->
-        <b style="color:black; font-size: 34px; font: Arial, sans-serif; opacity: 0.8;">{{ title }}</b>
+        <b style="color:black; font-size: 34px; font: Arial Narrow, sans-serif; opacity: 0.8;">
+            {{ title | truncate(12, True, "...", 0) }}</b>
 <!--          <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#skyprogram"></use>-->
 <!--        </svg>-->
       </a>
       <a href="/bookmarks/" class="header__bookmark-btn">
-        <img src="../static/img/bookmark.png" alt="" class="header__bookmark-icon" width="28">
-        <span class="header__bookmark-counter">{{ bookmarks_count }}</span>
+        {% if bookmarks_count > 0 %}
+          <img src="../static/img/bookmark.png" alt="" class="header__bookmark-icon" width="28" style="opacity: 0.8">
+          <span class="header__bookmark-counter">{{ bookmarks_count }}</span>
+        {% else %}
+          <img src="../static/img/bookmark.png" alt="" class="header__bookmark-icon" width="28" style="opacity: 0.2">
+        {% endif %}
       </a>
     </div>
   </header>

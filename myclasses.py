@@ -27,6 +27,7 @@ class DBase:
     def load(self):
         with open(self.filename, encoding='utf-8') as fp:
             self.data = json.load(fp)
+        # self.make_short_content(30)
         # self.wrap_tags()
 
     def save(self):
@@ -101,6 +102,11 @@ class DBase:
         for item in self.data:
             if field in item and '#' in item[field]:
                 item[field] = re.sub("<.*?>", "", item[field])
+
+    # def make_short_content(self, length: int):
+    #     for item in self.data:
+    #         if 'content' in item:
+    #             item['content_short'] = item['content'][:length]
 
 
 class Posts(DBase):

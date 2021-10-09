@@ -1,10 +1,10 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+<!--<!DOCTYPE html>-->
+<!--<html lang="ru">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <title>Title</title>-->
+<!--</head>-->
+<!--<body>-->
 
   <main class="container">
     <section class="items">
@@ -22,7 +22,20 @@
         <a href="#" class="item__post-link">
           <img src="{{ post.pic }}" alt="" width="348" class="item__post-img">
         </a>
-        <p class="item__descr">{{ post.content | striptags | truncate(39) }}</p>
+
+        <p class="item__descr">
+
+        {% for word in (post.content | striptags | truncate(70)).split(' ') %}
+        {% if word[0] == "#" %}
+          <a href="/tag/{{ word[1:] }}" class="item__tag">{{ word }}</a>
+        {% else %}
+          {{ word }}
+        {% endif%}
+        {% endfor %}
+
+        </p>
+
+<!--        <p class="item__descr">{{ post.content | truncate(39) | safe }}</p>-->
         <div class="item__post-info">
           <p class="item__comments-counter">{{ post.comments_count }} комментариев</p>
           <div class="item__counter">
@@ -52,5 +65,5 @@
   </main>
 
 
-</body>
-</html>
+<!--</body>-->
+<!--</html>-->

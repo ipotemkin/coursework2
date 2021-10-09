@@ -3,7 +3,7 @@ from utils import *
 
 # show all posts
 @app.route('/')
-def base_view():
+def main_feed():
     load_posts_with_comments_count(bkmarks=True)
     return render_template('matrix_view.html',
                            title='SKYPROGRAM',
@@ -11,13 +11,6 @@ def base_view():
                            posts=posts(),
                            bookmarks_count=len(bookmarks())
                            )
-
-
-# # show all posts
-# @app.route('/')
-# def main_feed():
-#     load_posts_with_comments_count(bkmarks=True)
-#     return render_template('main.html', posts=posts(), bookmarks_count=len(bookmarks()))
 
 
 # search throughout the posts
@@ -38,18 +31,10 @@ def search():
 # one post in detail
 @app.route('/posts/<int:uid>')
 def post(uid: int):
-    # OPTION 1 - shorter
-    # load_posts_with_comments_count(bkmarks=True)
-    # return render_template('post.html', post=posts(uid), comments=comments(post_id=uid))
-
-    # OPTION 2, it should be quicker
     load_all_data()
     post_ = posts(uid)
     post_['comments_count'] = comments.count(post_id=uid)
     post_['bookmarked'] = True if bookmarks.count(pk=uid) else False
-
-    # post_['content'] = wrap_tags(post_['content'])  #
-
     return render_template('post.html',
                            post=post_,
                            comments=comments(post_id=uid),
@@ -65,7 +50,13 @@ def show_bookmarks():
     bookmarks.load()
     comments.load()
     bookmarks.add_comments_count(comments)  # adding the actual number of comments to each post in the bookmarks
-    return render_template('bookmarks.html', bookmarks=bookmarks())
+    bookmarks.add_bookmark_status(bookmarks)
+    return render_template('matrix_view.html',
+                           title='BOOKMARKS',
+                           search_mode=False,
+                           posts=bookmarks(),
+                           bookmarks_count=len(bookmarks())
+                           )
 
 
 # add a bookmark
@@ -89,8 +80,6 @@ def delete_bookmark(uid):
 # user_feed
 @app.route('/users/<user_name>')
 def show_user_feed(user_name: str):
-    # load_posts_with_comments_count(bkmarks=True)
-    # return render_template('user-feed.html', posts=posts(poster_name=user_name))
     load_posts_with_comments_count(bkmarks=True)
     return render_template('matrix_view.html',
                            posts=posts(poster_name=user_name),
@@ -104,7 +93,6 @@ def show_user_feed(user_name: str):
 @app.route('/tag/<tag>')
 def show_tag(tag: str):
     load_posts_with_comments_count()
-    # return render_template('tag.html', posts=posts(entire_word=False, content='#'+tag))
     return render_template('matrix_view.html',
                            posts=posts(entire_word=False, content='#'+tag),
                            title='TAG/' + tag.upper(),
