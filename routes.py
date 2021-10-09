@@ -3,9 +3,21 @@ from utils import *
 
 # show all posts
 @app.route('/')
-def main_feed():
+def base_view():
     load_posts_with_comments_count(bkmarks=True)
-    return render_template('main.html', posts=posts(), bookmarks_count=len(bookmarks()))
+    return render_template('matrix_view.html',
+                           title='SKYPROGRAM',
+                           search_mode=True,
+                           posts=posts(),
+                           bookmarks_count=len(bookmarks())
+                           )
+
+
+# # show all posts
+# @app.route('/')
+# def main_feed():
+#     load_posts_with_comments_count(bkmarks=True)
+#     return render_template('main.html', posts=posts(), bookmarks_count=len(bookmarks()))
 
 
 # search throughout the posts
@@ -14,7 +26,13 @@ def search():
     load_posts_with_comments_count(bkmarks=True)
     # looking up the posts' content for the word as a substring
     results = posts(entire_word=False, content=word) if (word := request.args.get('s')) else []
-    return render_template('search.html', posts=results[:MAX_POSTS_IN_SEARCH], max_posts=len(results))
+    return render_template('search.html',
+                           posts=results[:MAX_POSTS_IN_SEARCH],
+                           max_posts=len(results),
+                           title='SEARCH',
+                           search_mode=False,
+                           bookmarks_count=len(bookmarks())
+                           )
 
 
 # one post in detail
@@ -32,7 +50,13 @@ def post(uid: int):
 
     # post_['content'] = wrap_tags(post_['content'])  #
 
-    return render_template('post.html', post=post_, comments=comments(post_id=uid))
+    return render_template('post.html',
+                           post=post_,
+                           comments=comments(post_id=uid),
+                           title='POST',
+                           search_mode=False,
+                           bookmarks_count=len(bookmarks())
+                           )
 
 
 # show all bookmarks
@@ -65,15 +89,28 @@ def delete_bookmark(uid):
 # user_feed
 @app.route('/users/<user_name>')
 def show_user_feed(user_name: str):
+    # load_posts_with_comments_count(bkmarks=True)
+    # return render_template('user-feed.html', posts=posts(poster_name=user_name))
     load_posts_with_comments_count(bkmarks=True)
-    return render_template('user-feed.html', posts=posts(poster_name=user_name))
+    return render_template('matrix_view.html',
+                           posts=posts(poster_name=user_name),
+                           title=user_name,
+                           search_mode=False,
+                           bookmarks_count=len(bookmarks())
+                           )
 
 
 # show tags
 @app.route('/tag/<tag>')
 def show_tag(tag: str):
     load_posts_with_comments_count()
-    return render_template('tag.html', posts=posts(entire_word=False, content='#'+tag))
+    # return render_template('tag.html', posts=posts(entire_word=False, content='#'+tag))
+    return render_template('matrix_view.html',
+                           posts=posts(entire_word=False, content='#'+tag),
+                           title='TAG/' + tag.upper(),
+                           search_mode=False,
+                           bookmarks_count=len(bookmarks())
+                           )
 
 
 # one post in detail
