@@ -108,4 +108,10 @@ def add_comments(uid: int):
             and (new_comments := request.form.get('new_comments')):
         comments.append(uid, new_post_user_name, new_comments)
         posts(uid)['comments_count'] = comments.count(post_id=uid)
-    return render_template('post.html', post=posts(uid), comments=comments(post_id=uid))
+    return render_template('post.html',
+                           post=posts(uid),
+                           comments=comments(post_id=uid),
+                           title='POST',
+                           search_mode=False,
+                           bookmarks_count=len(bookmarks())
+                           )

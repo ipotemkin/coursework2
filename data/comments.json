@@ -160,5 +160,23 @@
 		"commenter_name": "Test",
 		"comment": "Test",
 		"pk": 27
+	},
+	{
+		"post_id": 1,
+		"commenter_name": "James",
+		"comment": "I think there's a bug",
+		"pk": 28
+	},
+	{
+		"post_id": 1,
+		"commenter_name": "James",
+		"comment": "I think there's a bug",
+		"pk": 29
+	},
+	{
+		"post_id": 8,
+		"commenter_name": "User2",
+		"comment": "Test",
+		"pk": 30
 	}
 ]
