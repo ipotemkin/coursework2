@@ -1,23 +1,25 @@
 from utils import *
 from errors import *
 
+HTML_string = "<h2 style=\"color:red\">{}</h2>"
+
 
 @app.errorhandler(404)
 def bad_request_error(error):
-    return "<h1 style=\"color:red\">Bad request</h1>", 404
+    return HTML_string.format('Bad request'), 404
 
 
 @app.errorhandler(NotFoundPostError)
 def not_found_post_error(error):
     posts.load()
     posts_count = posts.count()
-    return f"<h2><p style=\"color:red\">Извините, пост таким ID не найден.</p>" \
-           f"<p>В базе {posts_count} постов. Попробуйте другой id</p></h2>", 404
+    return (HTML_string + '<h2><p>В базе {} постов. Попробуйте другой id</p></h2>').format(
+        'Извините, пост таким ID не найден.', posts_count), 404
 
 
 @app.errorhandler(NotFoundUserError)
 def not_found_user_error(error):
-    return f"<h2><p style=\"color:red\">Извините, такой пользователь не найден.</p>", 404
+    return HTML_string.format('Извините, такой пользователь не найден.'), 404
 
 
 # show all posts
@@ -54,7 +56,6 @@ def post(uid: int):
     load_all_data()
     post_ = posts(uid)
     if not post_:
-        print('My Exception')
         raise NotFoundPostError
     post_['comments_count'] = comments.count(post_id=uid)
     post_['bookmarked'] = True if bookmarks.count(pk=uid) else False
