@@ -184,5 +184,17 @@
 		"commenter_name": "James",
 		"comment": "I wanna go to the sea",
 		"pk": 31
+	},
+	{
+		"post_id": 1,
+		"commenter_name": "Test",
+		"comment": "Test",
+		"pk": 32
+	},
+	{
+		"post_id": 6,
+		"commenter_name": "John",
+		"comment": "Круть!",
+		"pk": 33
 	}
 ]

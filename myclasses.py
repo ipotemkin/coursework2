@@ -1,5 +1,6 @@
 import json
 import re
+from errors import *
 
 
 class DBase:
@@ -21,7 +22,7 @@ class DBase:
         If you set entire_word=False the function searches the given value as a substring of the given field_name
         """
         if not kwargs:
-            return self.data if not uid else self.get_item_by_id(uid)
+            return self.data if (uid is None) else self.get_item_by_id(uid)
         return self.get_items(entire_word, case_sensitive, **kwargs)
 
     def load(self):
@@ -64,7 +65,7 @@ class DBase:
 
     def count(self, **kwargs):
         if not kwargs:
-            return 0
+            return len(self.data)
         kwargs_dict = {**kwargs}
         key = list(kwargs_dict.keys())[0]
         value = list(kwargs_dict.values())[0]
