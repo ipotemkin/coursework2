@@ -1,6 +1,5 @@
 import json
 import re
-from errors import *
 
 
 class DBase:

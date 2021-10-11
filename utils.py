@@ -1,4 +1,4 @@
-from __init__ import *
+from __init__ import app, posts, comments, bookmarks
 
 
 # a batch script

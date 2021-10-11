@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect
+from flask import Flask
 from myclasses import Posts, Bookmarks, Comments
 
 
@@ -21,3 +21,5 @@ posts = Posts('data/data.json')
 comments = Comments('data/comments.json')
 bookmarks = Bookmarks('data/bookmarks.json')
 register_obj(posts, comments, bookmarks)
+
+from routes import *  # noqa

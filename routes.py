@@ -1,25 +1,27 @@
-from utils import *
-from errors import *
+from __init__ import *
+from flask import render_template, request, redirect
+from utils import load_posts_with_comments_count, load_all_data
+from errors import NotFoundPostError, NotFoundUserError
 
 HTML_string = "<h2 style=\"color:red\">{}</h2>"
 
 
 @app.errorhandler(404)
 def bad_request_error(error):
-    return HTML_string.format('Bad request'), 404
+    return render_template('error_with_text.html', error_text='Bad request'), 404
+    # HTML_string.format('Bad request'), 404
 
 
 @app.errorhandler(NotFoundPostError)
 def not_found_post_error(error):
     posts.load()
-    posts_count = posts.count()
-    return (HTML_string + '<h2><p>В базе {} постов. Попробуйте другой id</p></h2>').format(
-        'Извините, пост таким ID не найден.', posts_count), 404
+    return render_template('error_post_not_found.html', posts_count=posts.count()), 404
 
 
 @app.errorhandler(NotFoundUserError)
 def not_found_user_error(error):
-    return HTML_string.format('Извините, такой пользователь не найден.'), 404
+    return render_template('error_with_text.html',
+                           error_text='Извините, такой пользователь не найден.'), 404
 
 
 # show all posts
