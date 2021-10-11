@@ -1,0 +1,51 @@
+  <main class="container">
+    <section class="items">
+      {% for post in posts %}
+      <div class="items__item item">
+        <div class="item__top">
+          <a href="/users/{{ post.poster_name }}" class="item__head" id="post{{ post.pk }}">
+            <div class="item__ava-wrap">
+              <img src= "{{ post.poster_avatar }}" alt="" class="item__ava" width="47">
+            </div>
+            <span class="item__username">{{ post.poster_name }}</span>
+          </a>
+        </div>
+        <a href="#" class="item__post-link">
+          <img src="{{ post.pic }}" alt="" width="348" class="item__post-img">
+        </a>
+        <p class="item__descr">
+        {% for word in (post.content | striptags | truncate(70)).split(' ') %}
+        {% if word[0] == "#" %}
+          <a href="/tag/{{ word[1:] }}" class="item__tag">{{ word }}</a>
+        {% else %}
+          {{ word }}
+        {% endif%}
+        {% endfor %}
+        </p>
+        <div class="item__post-info">
+          <p class="item__comments-counter">{{ post.comments_count }} комментариев</p>
+          <div class="item__counter">
+            <img src="/static/img/eye.png" alt="" class="item__counter-icon" width="26">
+            <span class="item__counter-text">{{ post.likes_count }}</span>
+          </div>
+        </div>
+        <div class="item__post-bottom">
+          <a href="/posts/{{ post.pk }}" class="item__btn-more">Подробнее</a>
+          {% if post.bookmarked %}
+          <a href="/bookmarks/delete/{{ post.pk }}">
+            <button type="button" class="item__bookmark-btn active">
+              <img src="/static/img/bookmark.png" alt="" class="item__bookmark-icon" width="24" style="opacity: 0.8">
+            </button>
+          </a>
+          {% else %}
+          <a href="/bookmarks/add/{{ post.pk }}">
+            <button type="button" class="item__bookmark-btn">
+              <img src="/static/img/bookmark.png" alt="" class="item__bookmark-icon" width="24">
+            </button>
+          </a>
+          {% endif %}
+        </div>
+      </div>
+      {% endfor %}
+    </section>
+  </main>

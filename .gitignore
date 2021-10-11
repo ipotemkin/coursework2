@@ -1,9 +1,10 @@
-.idea/*
-venv/*
+.idea
+venv
 .DS_Store
 .gitignore.save
 questions.txt
-__pycache__/*
-data/comments_backup.json
-data/data_backup.json
-static/css/backup/*
+__pycache__
+*backup.json
+static/css/backup/
+*test.*
+extra_info
