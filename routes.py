@@ -9,7 +9,6 @@ HTML_string = "<h2 style=\"color:red\">{}</h2>"
 @app.errorhandler(404)
 def bad_request_error(error):
     return render_template('error_with_text.html', error_text='Bad request'), 404
-    # HTML_string.format('Bad request'), 404
 
 
 @app.errorhandler(NotFoundPostError)
