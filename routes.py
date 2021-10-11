@@ -70,7 +70,6 @@ def post(uid: int):
         raise NotFoundPostError
 
 
-
 # show all bookmarks
 @app.route('/bookmarks/')
 def show_bookmarks():
@@ -93,7 +92,7 @@ def add_bookmark(uid):
     bookmarks.load()
     if not bookmarks(uid):
         bookmarks.append(posts(uid))
-    return redirect(request.referrer, code=302)
+    return redirect(request.referrer)
 
 
 # delete a bookmark
@@ -101,7 +100,7 @@ def add_bookmark(uid):
 def delete_bookmark(uid):
     bookmarks.load()
     bookmarks.remove(bookmarks(uid))
-    return redirect(request.referrer, code=302)
+    return redirect(request.referrer)
 
 
 # user_feed
