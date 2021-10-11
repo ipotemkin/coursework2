@@ -56,18 +56,19 @@ def search():
 @app.route('/posts/<int:uid>')
 def post(uid: int):
     load_all_data()
-    post_ = posts(uid)
-    if not post_:
+    if post_ := posts(uid):
+        post_['comments_count'] = comments.count(post_id=uid)
+        post_['bookmarked'] = True if bookmarks.count(pk=uid) else False
+        return render_template('post.html',
+                               post=post_,
+                               comments=comments(post_id=uid),
+                               title='POST',
+                               search_mode=False,
+                               bookmarks_count=len(bookmarks())
+                               )
+    else:
         raise NotFoundPostError
-    post_['comments_count'] = comments.count(post_id=uid)
-    post_['bookmarked'] = True if bookmarks.count(pk=uid) else False
-    return render_template('post.html',
-                           post=post_,
-                           comments=comments(post_id=uid),
-                           title='POST',
-                           search_mode=False,
-                           bookmarks_count=len(bookmarks())
-                           )
+
 
 
 # show all bookmarks
