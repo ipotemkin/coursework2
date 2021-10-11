@@ -3,8 +3,6 @@ from flask import render_template, request, redirect
 from utils import load_posts_with_comments_count, load_all_data
 from errors import NotFoundPostError, NotFoundUserError
 
-HTML_string = "<h2 style=\"color:red\">{}</h2>"
-
 
 @app.errorhandler(404)
 def bad_request_error(error):
